@@ -29,7 +29,7 @@ jobs:
         run: docker compose up -d
 
       - name: Test
-        run: go test -v main_test.go 
+        run: DB_HOST=${{ secrets.DB_HOST }} DB_PASSWORD=${{ secrets.DB_PASSWORD }} DB_USER=${{ secrets.DB_USER }} go test -v main_test.go 
         
     
   build:
@@ -41,6 +41,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: DB_HOST=${{ secrets.DB_HOST }} DB_PASSWORD=${{ secrets.DB_PASSWORD }} DB_USER=${{ secrets.DB_USER }} DB_NAME=${{ secrets.DB_NAME }} DB_PORT=${{ secrets.DB_PORT }} go build -v main.go
+      run: go build -v main.go
 
       
