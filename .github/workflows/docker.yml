@@ -29,6 +29,13 @@ jobs:
         username: "alanseraf"
         # Password or personal access token used to log against the Docker registry
         password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Sanitize Docker tag
+      id: sanitize_tag
+      run: |
+          # Substitui todos os '/' por '-' no nome da ref.
+          TAG=$(echo ${{ github.ref_name }} | sed 's/\//-/g')
+          echo "value=${TAG}" >> $GITHUB_OUTPUT
                 
     - name: Build and push Docker images
       # You may pin to the exact commit or the version.
@@ -42,6 +49,6 @@ jobs:
         # Push is a shorthand for --output=type=registry
         push: true
         # List of tags
-        tags: alanseraf/go_ci:${{ github.ref_name }}
+        tags: alanseraf/go_ci:${{ steps.sanitize_tag.outputs.value }}
           
           
