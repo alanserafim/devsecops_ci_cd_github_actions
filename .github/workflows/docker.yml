@@ -13,6 +13,13 @@ jobs:
     - name: setup Docker Build
       uses: docker/setup-buildx-action@v2.0.0
 
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v4.3.0
+      with:
+        # Name of the artifact to download. If unspecified, all artifacts for the run are downloaded.
+        name: programa_compilado_go
+        # IDs of the artifacts to download, comma-separated. Either inputs `artifact-ids` or `name` can be used, but not both.
+        
     - name: Docker Login
       # You may pin to the exact commit or the version.
       # uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772
