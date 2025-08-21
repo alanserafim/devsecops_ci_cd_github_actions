@@ -1,5 +1,14 @@
 name: Entrega continua
 
+#PRÉ-REQUISITOS
+#==> PROVISIONAR MÁQUINA VIRTUAL EC2
+#==> PROVISIONAR BANCO DE DADOS RDS
+#===> CONFIGURAR COMUNICAÇÃO ENTRE OS GRUPOS DE SEGURANÇA
+#===> SG DA EC2 - ENTRADA: (SSH) + Todo o tráfego SG do BD + TCP (8000) qualquer ipv4
+#===> SG DA EC2 - SAÍDA: Todo o tráfego
+#===> SG DO BD - Entrada: Todo o tráfego do propróprio SG + PostgersSQL do SG da EC2
+#===> SG DO BD - Saída: Todo o tráfego
+
 on:
   workflow_call:
 
@@ -19,8 +28,11 @@ jobs:
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        #CHAVE PRIVADA DA INSTÂNCIA EC2
         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        #ENDEREÇO IPV4 PÚBLICO DA INSTÄNCIA EC2
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        #CONEXÃO DE INSTÂNCIA DO EC2 > NOME DE USUÁRIO
         TARGET: /home/${{ secrets.REMOTE_USER }}
         EXCLUDE: "postgres-data"
         
